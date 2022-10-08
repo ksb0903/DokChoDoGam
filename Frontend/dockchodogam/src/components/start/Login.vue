@@ -1,6 +1,5 @@
 <template>
   <div class="background">
-    <!-- <img class="background" src="@/assets/game_background.png" alt="" /> -->
     <div class="loginpage">
       <div class="loginpage__left">
         <img class="loginpage__img" src="@/assets/login/book.gif" alt="" />
@@ -25,22 +24,9 @@
         />
         <div class="loginpage__btn">
           <button class="login__btn" @click="login()">로그인</button>
+        </div>
 
-          <!-- <a href="/oauth2/authorization/kakao">
-            <button class="kakaologin__btn">카카오로그인</button>
-          </a> -->
-        </div>
         <div class="loginpage__btn">
-          <button class="signup__btn" @click="signUp()">회원가입</button>
-          <!-- <a href="/oauth2/authorization/kakao">카카오 로그인</a> -->
-          <!-- <button class="findpassword__btn" @click="findpassword()">
-            비밀번호찾기
-          </button> -->
-        </div>
-        <div class="loginpage__btn">
-          <!-- <button class="kakaologin__btn" @click="kakaoLogin()">
-            카카오로그인
-          </button> -->
           <img
             class="kakaologin__btn"
             @click="kakaoLogin()"
@@ -48,10 +34,13 @@
             alt=""
           />
         </div>
-        <div>
-          <a class="findpassword__btn" @click="findpassword()"
-            >비밀번호를 잊으셨나요?
-          </a>
+        <div class="loginpage__btn">
+          <div class="signfind">
+            <a class="findpassword__btn" @click="findpassword()"
+              >비밀번호 찾기
+            </a>
+            <a class="findpassword__btn" @click="signUp()">회원가입</a>
+          </div>
         </div>
       </div>
     </div>
@@ -76,9 +65,7 @@ export default {
     ...mapActions(['doRefreshToken', 'fetchUserInfo', 'fetchUserDeck']),
     ...mapGetters(['isAccessTokenExpired']),
     kakaoLogin() {
-      // window.open(BASE_URL + '/oauth2/authorization/kakao')
       window.location.href = this.kakaoLoginURL
-      // this.$router.replace({ name: 'kakaologinagreement' })
     },
     findpassword() {
       this.$router.push({ name: 'findpassword' })
@@ -87,8 +74,6 @@ export default {
       this.$router.push({ name: 'signup' })
     },
     async login() {
-      console.log(this.username)
-      console.log(this.password)
       try {
         const result = await axios.post(
           BASE_URL + '/api/v1/user/auth/login',
@@ -103,7 +88,6 @@ export default {
           }
         )
         if (result.status === 200) {
-          console.log(result)
           localStorage.setItem('accessToken', result.data.accessToken)
           localStorage.setItem('refreshToken', result.data.refreshToken)
           const option = {
@@ -236,7 +220,6 @@ button {
 }
 
 .loginpage__left {
-  /* height: 100%; */
   width: 30vw;
   margin-left: 5vw;
   margin-right: 5vw;
@@ -248,7 +231,6 @@ button {
 }
 
 .loginpage__right {
-  /* height: 100%; */
   width: 30vw;
   margin-left: 5vw;
   margin-right: 5vw;
@@ -264,13 +246,9 @@ input {
   height: 7vh;
   margin: 8px 0 8px 0;
   padding: 10px 15px 10px 25px;
-  /* background: #ececec url('@/assets/search-icon.png') no-repeat 20px center;
-  background-size: 20px 20px; */
   font-size: 16px;
   border: #ececec solid 2px;
   border-radius: 20px;
-  /* box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
-    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px; */
 }
 
 input::placeholder {
@@ -286,12 +264,16 @@ input:focus {
   text-decoration: none;
 }
 
+a {
+  color: rgb(52, 52, 52);
+}
+
 a:link {
-  color: black;
+  color: rgb(45, 45, 45);
 }
 
 a:hover {
-  color: blue;
+  color: green;
   cursor: pointer;
 }
 
@@ -338,6 +320,13 @@ a:hover {
 
 .findpassword__btn {
   display: flex;
+  justify-content: space-around;
+}
+
+.signfind {
+  display: flex;
+  width: 20vw;
+  flex-direction: row;
   justify-content: space-around;
 }
 
@@ -434,7 +423,7 @@ a:hover {
     padding-left: 7vw;
   }
   button {
-    height: 4.5vh;
+    height: 5vh;
     border-radius: 10px;
     border: none;
     width: 80vw;
@@ -451,8 +440,15 @@ a:hover {
 
   .loginpage__btn {
     display: flex;
-    width: 78vw;
+    width: 75vw;
     justify-content: space-around;
+  }
+
+  .signfind {
+    display: flex;
+    width: 70vw;
+    flex-direction: row;
+    justify-content: space-between;
   }
 }
 </style>
